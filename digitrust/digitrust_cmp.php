@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: DigiTrust CMP
-Description: DigiTrust CMP allows these publishers to install the CMP in their site and without having to write code
-Version: 4.0.3
-Author: Abderrahmen Tabbakh
+Description: DigiTrust CMP javascript injection for GDPR
+Version: 0.0.1
+Author: Purch && DigiTrust Working Group
 License: GPLv2 or later
 Text Domain: digitrust
 */

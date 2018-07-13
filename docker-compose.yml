@@ -1,0 +1,40 @@
+version: '2'
+services:
+  wordpress:
+    build: ./docker
+    networks:
+      - front
+      - back
+    ports:
+      - 8181:80
+    environment:
+      WORDPRESS_DB_PASSWORD: root
+      WORDPRESS_DB_NAME: wpdb
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_DB_HOST: wordpress_db
+    volumes:
+      - ./digitrust:/var/www/html/wp-content/plugins/digitrust
+  wordpress_db:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - wordpress-db-data:/var/lib/mysql
+    networks:
+      - back
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    networks:
+      - back
+    ports:
+      - 8282:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: wordpress_db
+volumes:
+    wordpress-db-data:
+      driver: local
+networks:
+  front:
+  back:
