@@ -22,7 +22,6 @@ Settings
 ------------
 The wordpress site can be accessed at: [http://localhost:8181](http://localhost:8181)
 
-The phpmyadmin can be accessed at: [http://localhost:8282](http://localhost:8282) with user:root and password:root
 
 Go to [http://localhost:8181/wp-admin/plugins.php](http://localhost:8181/wp-admin/plugins.php) to activate DigiTrust CMP plugin
 
