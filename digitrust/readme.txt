@@ -1,2 +1,2 @@
 === DigiTrust CMP ===
-Inject CMP javascript in all site pages.
+DigiTrust CMP javascript injection for GDPR
