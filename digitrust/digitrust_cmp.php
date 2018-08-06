@@ -21,6 +21,7 @@ class Digitrus_CMP
         "localization": {},
         "forceLocale": null,
         "gdprAppliesGlobally": false,
+        "askForConset": null,
         "repromptOptions": {
             "fullConsentGiven": 360,
             "someConsentGiven": 30,
@@ -29,8 +30,8 @@ class Digitrus_CMP
         "geoIPVendor": "https://cmp.digitru.st/1/geoip.json",
         "digitrustRedirectUrl": "https://cdn.digitru.st/prod/1.5.10/redirect.html?redirect=",
         "testingMode": "normal",
-        "blockBrowsing": true,
-        "layout": null,
+        "blockBrowsing": false,
+        "layout": "thin",
         "showFooterAfterSubmit": true,
         "logoUrl": null,
         "css": {
@@ -114,16 +115,15 @@ class Digitrus_CMP
         if (!current_user_can('manage_options')) {
             return;
         }
-
-        echo '<div class="wrap">
-            <h1>'. esc_html(get_admin_page_title()).'</h1>
-            <form action="" method="post">
-                <textarea id="digitrust_cmp_json_config" name="digitrust_cmp_json_config" rows="10" cols="50">'. $this->getConfig() .'</textarea>
-                <p class="submit">
-                    <input type="submit" class="button button-primary" value="Save Changes" />
-                </p>
-            </form>
-        </div>';
+	    $config = json_decode($this->getConfig(), true);
+        $content = [];
+	    if (!empty($config['logoUrl']) && substr($config['logoUrl'], 0, 8) !== "https://") {
+		    $content[] = "<br/><div class='error'>Invalid site logo</div>";
+	    }
+	    $content[] = '<script>var config_digitrust_cmp = ' . $this->getConfig() . '</script>';
+        $content[] = '<div class="wrap"><h1>'. esc_html(get_admin_page_title()).'</h1><form action="" method="post">';
+        echo join('', $content);
+        require_once('digitrust_setting_page_html.html');
     }
 
     /**
@@ -131,8 +131,10 @@ class Digitrus_CMP
      */
     public function update_config()
     {
-        if (isset($_POST['digitrust_cmp_json_config']) && !empty($_POST['digitrust_cmp_json_config'])) {
-            $this->setConfig(str_replace(['\"', "\'"], ['"', "'"], $_POST['digitrust_cmp_json_config']));
+        if (!empty($_POST['digitrust_cmp_reset'])) {
+        	$this->resetConfig();
+        } elseif (!empty($_POST['digitrust_cmp_save'])) {
+	        $this->saveConfig();
         }
     }
 
@@ -157,6 +159,59 @@ class Digitrus_CMP
         $table = $wpdb->prefix.'digitrust_config';
         $wpdb->update($table, array('config' => $config), array('id' => 1));
         $this->config = $config;
+    }
+
+    protected function resetConfig()
+    {
+	    $this->setConfig(self::DEFAULT_CONFIG);
+    }
+
+    protected function saveConfig()
+    {
+	    $config = json_decode(self::DEFAULT_CONFIG, true);
+	    if (!empty($_POST['digitrust_cmp_layout'])) {
+		    $config['layout'] = $_POST['digitrust_cmp_layout'];
+		    if ($config['layout'] == 'modal') {
+			    $config['blockBrowsing'] = true;
+		    }
+	    }
+	    if (isset($_POST['digitrust_cmp_block_browsing'])) {
+	    	if ($config['layout'] != 'modal') {
+			    $config['blockBrowsing'] = boolval($_POST['digitrust_cmp_block_browsing']);
+		    }
+	    }
+
+	    if (isset($_POST['digitrust_cmp_force_local'])) {
+	    	if ($_POST['digitrust_cmp_force_local'] == 'Autodetect') {
+			    $config['forceLocale'] = get_locale();
+		    } else {
+			    $config['forceLocale'] = $_POST['digitrust_cmp_force_local'];
+		    }
+	    }
+
+	    if (isset($_POST['digitrust_cmp_ask_for_conset'])) {
+		    $config['askForConset'] = $_POST['digitrust_cmp_ask_for_conset'];
+	    	if (in_array($config['askForConset'], [0,1])) {
+			    $config['gdprAppliesGlobally'] = true;
+			    $config['testingMode'] = 'normal';
+		    } else {
+			    $config['gdprAppliesGlobally'] = false;
+			    $config['testingMode'] = 'newer show';
+		    }
+	    }
+
+	    if (isset($_POST['digitrust_cmp_store_consent_globally'])) {
+		    $config['storeConsentGlobally'] = boolval($_POST['digitrust_cmp_store_consent_globally']);
+	    }
+
+	    if (isset($_POST['digitrust_cmp_logo_url'])) {
+		    $config['logoUrl'] = trim($_POST['digitrust_cmp_logo_url']);
+	    	if (empty($config['logoUrl'])) {
+			    $config['logoUrl'] = null;
+		    }
+	    }
+
+	    $this->setConfig(json_encode($config));
     }
 
 }
