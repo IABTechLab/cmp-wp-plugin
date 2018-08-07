@@ -115,13 +115,9 @@ class Digitrus_CMP
         if (!current_user_can('manage_options')) {
             return;
         }
-	    $config = json_decode($this->getConfig(), true);
         $content = [];
-	    if (!empty($config['logoUrl']) && substr($config['logoUrl'], 0, 8) !== "https://") {
-		    $content[] = "<br/><div class='error'>Invalid site logo</div>";
-	    }
 	    $content[] = '<script>var config_digitrust_cmp = ' . $this->getConfig() . '</script>';
-        $content[] = '<div class="wrap"><h1>'. esc_html(get_admin_page_title()).'</h1><form action="" method="post">';
+        $content[] = '<div class="wrap"><h1>'. esc_html(get_admin_page_title()).'</h1>';
         echo join('', $content);
         require_once('digitrust_setting_page_html.html');
     }
@@ -168,7 +164,7 @@ class Digitrus_CMP
 
     protected function saveConfig()
     {
-	    $config = json_decode(self::DEFAULT_CONFIG, true);
+	    $config = json_decode($this->getConfig(), true);
 	    if (!empty($_POST['digitrust_cmp_layout'])) {
 		    $config['layout'] = $_POST['digitrust_cmp_layout'];
 		    if ($config['layout'] == 'modal') {
@@ -191,7 +187,10 @@ class Digitrus_CMP
 
 	    if (isset($_POST['digitrust_cmp_ask_for_conset'])) {
 		    $config['askForConset'] = $_POST['digitrust_cmp_ask_for_conset'];
-	    	if (in_array($config['askForConset'], [0,1])) {
+		    if ($config['askForConset'] == 0) {
+			    $config['gdprAppliesGlobally'] = false;
+			    $config['testingMode'] = 'normal';
+		    } elseif ($config['askForConset'] == 1) {
 			    $config['gdprAppliesGlobally'] = true;
 			    $config['testingMode'] = 'normal';
 		    } else {
@@ -204,8 +203,15 @@ class Digitrus_CMP
 		    $config['storeConsentGlobally'] = boolval($_POST['digitrust_cmp_store_consent_globally']);
 	    }
 
-	    if (isset($_POST['digitrust_cmp_logo_url'])) {
-		    $config['logoUrl'] = trim($_POST['digitrust_cmp_logo_url']);
+	    if (!empty($_FILES['digitrust_cmp_logo_url'])) {
+		    if ( ! function_exists( 'wp_handle_upload' ) ) {
+			    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		    }
+		    $moveFile = wp_handle_upload($_FILES['digitrust_cmp_logo_url'], ['test_form' => false]);
+	    }
+
+	    if (isset($moveFile['url'])) {
+		    $config['logoUrl'] = $moveFile['url'];
 	    	if (empty($config['logoUrl'])) {
 			    $config['logoUrl'] = null;
 		    }

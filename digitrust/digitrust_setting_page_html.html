@@ -1,4 +1,4 @@
-<form action="" method="post">
+<form enctype="multipart/form-data" action="" method="post">
     <div style="font-size: 14px; padding: 15px 0 5px 1px">Consent Management UI layout</div>
     <div>
         <div style="background-color: #6f6f6f;width: 100px;height: 100px;">
@@ -133,9 +133,10 @@
                     <option value="0">Your site only</option>
                 </select>
                     <div style="font-size: 14px; padding: 15px 0 5px 1px">Site logo</div>
-                    <div><input name="digitrust_cmp_logo_url" id="digitrust_cmp_logo_url" value=""
-                                style="width: 242px" placeholder="paste URL path here">
+                    <div><input name="digitrust_cmp_logo_url" id="digitrust_cmp_logo_url" type="file"
+                                accept="image/*" onchange="previewLogo(event)" />
                     </div>
+                    <div><img id="preview_logo" style="max-width: 75%; max-height: 100px"/></div>
                     <p class="submit">
                         <input type="submit" name="digitrust_cmp_reset" class="button button-primary"
                                style="width: 130px" value="Reset to Defaults">
@@ -169,7 +170,12 @@
       document.getElementById('digitrust_cmp_store_consent_globally').value =
         config_digitrust_cmp['storeConsentGlobally'] ? 1 : 0;
 
-      document.getElementById('digitrust_cmp_logo_url').value = config_digitrust_cmp['logoUrl'];
+      document.getElementById('preview_logo').src = config_digitrust_cmp['logoUrl'];
     }
+
+    var previewLogo = function(event) {
+      var output = document.getElementById('preview_logo');
+      output.src = URL.createObjectURL(event.target.files[0]);
+    };
 
 </script>
