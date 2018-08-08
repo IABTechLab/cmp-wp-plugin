@@ -8,7 +8,7 @@ License: GPLv2 or later
 Text Domain: digitrust
 */
 
-class Digitrus_CMP
+class Digitrust_CMP
 {
 
     const DEFAULT_CONFIG = '{
@@ -203,17 +203,21 @@ class Digitrus_CMP
 		    $config['storeConsentGlobally'] = boolval($_POST['digitrust_cmp_store_consent_globally']);
 	    }
 
-	    if (!empty($_FILES['digitrust_cmp_logo_url'])) {
-		    if ( ! function_exists( 'wp_handle_upload' ) ) {
-			    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+	    if ($_POST['remove_logo'] == 1) {
+		    $config['logoUrl'] = null;
+	    } else {
+		    if (!empty($_FILES['digitrust_cmp_logo_url'])) {
+			    if ( ! function_exists( 'wp_handle_upload' ) ) {
+				    require_once( ABSPATH . 'wp-admin/includes/file.php' );
+			    }
+			    $moveFile = wp_handle_upload($_FILES['digitrust_cmp_logo_url'], ['test_form' => false]);
 		    }
-		    $moveFile = wp_handle_upload($_FILES['digitrust_cmp_logo_url'], ['test_form' => false]);
-	    }
 
-	    if (isset($moveFile['url'])) {
-		    $config['logoUrl'] = $moveFile['url'];
-	    	if (empty($config['logoUrl'])) {
-			    $config['logoUrl'] = null;
+		    if (isset($moveFile['url'])) {
+			    $config['logoUrl'] = $moveFile['url'];
+			    if (empty($config['logoUrl'])) {
+				    $config['logoUrl'] = null;
+			    }
 		    }
 	    }
 
@@ -222,4 +226,4 @@ class Digitrus_CMP
 
 }
 
-new Digitrus_CMP();
+new Digitrust_CMP();
