@@ -4,7 +4,6 @@ Plugin Name: DigiTrust CMP
 Description: DigiTrust CMP javascript injection for GDPR
 Version: 0.0.1
 Author: Purch && DigiTrust Working Group
-License: GPLv2 or later
 Text Domain: digitrust
 */
 
@@ -55,7 +54,7 @@ class Digitrust_CMP
     protected $config = self::DEFAULT_CONFIG;
 
     /**
-     * Digitrus_CMP constructor.
+     * Digitrust_CMP constructor.
      */
     public function __construct()
     {
