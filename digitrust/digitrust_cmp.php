@@ -46,7 +46,7 @@ class Digitrust_CMP
             "custom-font-url": null
         },
         "digitrust": {
-            "redirects": false
+            "redirects": true
         }
     }';
 
@@ -103,7 +103,7 @@ class Digitrust_CMP
      */
     function digitrust_setting_page()
     {
-        add_menu_page('DigiTrust config', 'DigiTrust', 'manage_options', 'digitrust', array($this, 'digitrust_setting_page_html'));
+        add_menu_page('DigiTrust CMP settings', 'DigiTrust', 'manage_options', 'digitrust', array($this, 'digitrust_setting_page_html'));
     }
 
     /**
