@@ -135,7 +135,7 @@
                     <div>
                         <input name="digitrust_cmp_logo_url" id="digitrust_cmp_logo_url" type="file"
                                accept="image/*" onchange="previewLogo(event)"/>
-                        <input name="remove_logo_button" id="remove_logo_button" type="button" value="remove logo"
+                        <input name="remove_logo_button" id="remove_logo_button" type="button" value="Remove logo" class="button button-primary"
                                onclick="removeLogo(event)" style="margin: 0px 0px 8px 0;">
                     </div>
                     <div>
@@ -204,7 +204,7 @@
     document.getElementById('preview_logo').src = config_digitrust_cmp['logoUrl'];
     if (!config_digitrust_cmp['logoUrl']) {
       document.getElementById('preview_logo').hidden = true;
-      document.getElementById('remove_logo_button').hidden = true;
+      document.getElementById('remove_logo_button').style.display = 'none';
     } else {
       document.getElementById('digitrust_cmp_logo_url').hidden = true;
     }
@@ -216,7 +216,7 @@
     var output = document.getElementById('preview_logo');
     output.src = URL.createObjectURL(event.target.files[0]);
     document.getElementById('preview_logo').hidden = false;
-    document.getElementById('remove_logo_button').hidden = false;
+    document.getElementById('remove_logo_button').style.display = 'inline';
     document.getElementById('remove_logo').value = 0;
     document.getElementById('digitrust_cmp_logo_url').hidden = true;
   };
@@ -224,13 +224,12 @@
   var removeLogo = function (event) {
     document.getElementById('remove_logo').value = 1;
     document.getElementById('preview_logo').hidden = true;
-    document.getElementById('remove_logo_button').hidden = true;
+    document.getElementById('remove_logo_button').style.display = 'none';
     document.getElementById('digitrust_cmp_logo_url').value = null;
     document.getElementById('digitrust_cmp_logo_url').hidden = false;
   };
 
   var changeLayout = function () {
-    debugger;
     document.getElementById('site_logo').hidden = !!document.getElementById('digitrust_cmp_layout_thin').checked;
 
     var elem = document.getElementById('digitrust_cmp_block_browsing');
