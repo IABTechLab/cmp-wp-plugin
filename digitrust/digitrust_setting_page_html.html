@@ -47,7 +47,7 @@
                     Block browsing before a consent decision has been made
                 </div>
                 <div>
-                    <select name="digitrust_cmp_block_browsing" id="digitrust_cmp_block_browsing" style="width: 242px">
+                    <select name="digitrust_cmp_block_browsing" id="digitrust_cmp_block_browsing" style="width: 255px">
                         <option value="0">No</option>
                         <option value="1">Yes</option>
                     </select>
@@ -55,7 +55,7 @@
 
                 <div style="font-size: 14px; padding: 15px 0 5px 1px">Select your UI language</div>
                 <div>
-                    <select name="digitrust_cmp_force_local" id="digitrust_cmp_force_local" style="width: 242px">
+                    <select name="digitrust_cmp_force_local" id="digitrust_cmp_force_local" style="width: 255px">
                         <option value="Autodetect">Autodetect</option>
                         <option value="ar">Aragonese</option>
                         <option value="ast">Asturian</option>
@@ -135,7 +135,8 @@
                     <div>
                         <input name="digitrust_cmp_logo_url" id="digitrust_cmp_logo_url" type="file"
                                accept="image/*" onchange="previewLogo(event)"/>
-                        <input name="remove_logo_button" id="remove_logo_button" type="button" value="Remove logo" class="button button-primary"
+                        <input name="remove_logo_button" id="remove_logo_button" type="button" value="Remove logo"
+                               class="button button-primary"
                                onclick="removeLogo(event)" style="margin: 0px 0px 8px 0;">
                     </div>
                     <div>
@@ -149,18 +150,21 @@
             <td style="border: 1px solid #d6d6d6;padding: 10px;">
                 <div style="font-weight: bold; font-size: 15px">Customise your Consent Solution
                 </div>
-                <div style="font-size: 14px; padding: 15px 0 5px 1px">Which users would you like to ask for consent?</div>
+                <div style="font-size: 14px; padding: 15px 0 5px 1px">Which users would you like to ask for consent?
+                </div>
                 <div>
-                    <select name="digitrust_cmp_ask_for_conset" id="digitrust_cmp_ask_for_conset" style="width: 242px">
+                    <select name="digitrust_cmp_ask_for_conset" id="digitrust_cmp_ask_for_conset" style="width: 255px">
                         <option selected="selected" value="0">EU users only</option>
                         <option value="1">Everyone</option>
                         <option value="2">No-one</option>
                     </select>
                 </div>
-                <div style="font-size: 14px; padding: 15px 0 5px 1px">When users set their consent preferences, where should those settings apply?</div>
+                <div style="font-size: 14px; padding: 15px 0 5px 1px">When users set their consent preferences, where
+                    should those settings apply?
+                </div>
                 <div>
                     <select name="digitrust_cmp_store_consent_globally" id="digitrust_cmp_store_consent_globally"
-                            style="width: 242px">
+                            style="width: 255px">
                         <option selected="selected" value="1">On your site and across the internet</option>
                         <option value="0">On your site only</option>
                     </select>
@@ -175,10 +179,16 @@
                style="width: 110px" value="Save Changes">
     </p>
     <div>
-        <p style="line-height: 1em; color: #8a8a8a; font-size: 9px;">Please use links below to know more about GDPR, Transparency & Consent Framework and DigiTrust CMP</p>
-        <p style="line-height: 1em; font-size: 9px;"><a style="color: #8a8a8a;" href="https://www.iabeurope.eu/category/policy/gdpr-implementation/">https://www.iabeurope.eu/category/policy/gdpr-implementation/</a></p>
-        <p style="line-height: 1em; font-size: 9px;"><a style="color: #8a8a8a;" href="http://advertisingconsent.eu/">http://advertisingconsent.eu/</a></p>
-        <p style="line-height: 1em; font-size: 9px;"><a style="color: #8a8a8a;" href="https://github.com/digi-trust/cmp">https://github.com/digi-trust/cmp</a></p>
+        <p style="line-height: 1em; color: #8a8a8a; font-size: 9px;">Please use links below to know more about GDPR,
+            Transparency & Consent Framework and DigiTrust CMP</p>
+        <p style="line-height: 1em; font-size: 9px;"><a style="color: #8a8a8a;"
+                                                        href="https://www.iabeurope.eu/category/policy/gdpr-implementation/"
+                                                        target="_blank">https://www.iabeurope.eu/category/policy/gdpr-implementation/</a>
+        </p>
+        <p style="line-height: 1em; font-size: 9px;"><a style="color: #8a8a8a;" href="http://advertisingconsent.eu/"
+                                                        target="_blank">http://advertisingconsent.eu/</a></p>
+        <p style="line-height: 1em; font-size: 9px;"><a style="color: #8a8a8a;" href="https://github.com/digi-trust/cmp"
+                                                        target="_blank">https://github.com/digi-trust/cmp</a></p>
     </div>
 </form>
 <script>

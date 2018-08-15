@@ -10,6 +10,8 @@ Text Domain: digitrust
 class Digitrust_CMP
 {
 
+	protected $errors = [];
+
     const DEFAULT_CONFIG = '{
         "customPurposeListLocation": null,
         "globalVendorListLocation": "https://vendorlist.consensu.org/vendorlist.json",
@@ -117,6 +119,9 @@ class Digitrust_CMP
         $content = [];
 	    $content[] = '<script>var config_digitrust_cmp = ' . $this->getConfig() . '</script>';
         $content[] = '<div class="wrap"><h1>'. esc_html(get_admin_page_title()).'</h1>';
+	    foreach ($this->errors as $error) {
+		    $content[] = "<br/><div class='error'>$error</div>";
+	    }
         echo join('', $content);
         require_once('digitrust_setting_page_html.html');
     }
@@ -161,48 +166,57 @@ class Digitrust_CMP
 	    $this->setConfig(self::DEFAULT_CONFIG);
     }
 
+    protected function validatePostData()
+    {
+    	$expectedData = [
+    		'digitrust_cmp_layout',
+		    'digitrust_cmp_force_local',
+		    'digitrust_cmp_ask_for_conset',
+		    'digitrust_cmp_store_consent_globally',
+		    'remove_logo'
+	    ];
+
+    	foreach ($expectedData as $key) {
+    		if (!array_key_exists($key, $_POST)) {
+    			$this->errors[] = $key . ' should be defined.';
+		    }
+	    }
+    }
+
     protected function saveConfig()
     {
+    	$this->validatePostData();
+    	if (!empty($this->errors)) {
+    		return;
+	    }
 	    $config = json_decode($this->getConfig(), true);
-	    if (!empty($_POST['digitrust_cmp_layout'])) {
-		    $config['layout'] = $_POST['digitrust_cmp_layout'];
-		    if ($config['layout'] == 'modal') {
-			    $config['blockBrowsing'] = true;
-		    }
-	    }
-	    if (isset($_POST['digitrust_cmp_block_browsing'])) {
-	    	if ($config['layout'] != 'modal') {
-			    $config['blockBrowsing'] = boolval($_POST['digitrust_cmp_block_browsing']);
-		    }
+	    $config['layout'] = $_POST['digitrust_cmp_layout'];
+	    $config['blockBrowsing'] = boolval($_POST['digitrust_cmp_block_browsing']);
+	    if ($config['layout'] === 'modal') {
+		    $config['blockBrowsing'] = true;
 	    }
 
-	    if (isset($_POST['digitrust_cmp_force_local'])) {
-	    	if ($_POST['digitrust_cmp_force_local'] == 'Autodetect') {
-			    $config['forceLocale'] = get_locale();
-		    } else {
-			    $config['forceLocale'] = $_POST['digitrust_cmp_force_local'];
-		    }
+	    if ($_POST['digitrust_cmp_force_local'] === 'Autodetect') {
+		    $config['forceLocale'] = null;
+	    } else {
+		    $config['forceLocale'] = $_POST['digitrust_cmp_force_local'];
 	    }
 
-	    if (isset($_POST['digitrust_cmp_ask_for_conset'])) {
-		    $config['askForConset'] = $_POST['digitrust_cmp_ask_for_conset'];
-		    if ($config['askForConset'] == 0) {
-			    $config['gdprAppliesGlobally'] = false;
-			    $config['testingMode'] = 'normal';
-		    } elseif ($config['askForConset'] == 1) {
-			    $config['gdprAppliesGlobally'] = true;
-			    $config['testingMode'] = 'normal';
-		    } else {
-			    $config['gdprAppliesGlobally'] = false;
-			    $config['testingMode'] = 'newer show';
-		    }
+	    $config['askForConset'] = (int) $_POST['digitrust_cmp_ask_for_conset'];
+	    if ($config['askForConset'] === 0) {
+		    $config['gdprAppliesGlobally'] = false;
+		    $config['testingMode'] = 'normal';
+	    } elseif ($config['askForConset'] === 1) {
+		    $config['gdprAppliesGlobally'] = true;
+		    $config['testingMode'] = 'normal';
+	    } elseif ($config['askForConset'] === 2) {
+		    $config['gdprAppliesGlobally'] = false;
+		    $config['testingMode'] = 'never show';
 	    }
 
-	    if (isset($_POST['digitrust_cmp_store_consent_globally'])) {
-		    $config['storeConsentGlobally'] = boolval($_POST['digitrust_cmp_store_consent_globally']);
-	    }
+	    $config['storeConsentGlobally'] = boolval($_POST['digitrust_cmp_store_consent_globally']);
 
-	    if ($_POST['remove_logo'] == 1) {
+	    if ((int) $_POST['remove_logo'] === 1) {
 		    $config['logoUrl'] = null;
 	    } else {
 		    if (!empty($_FILES['digitrust_cmp_logo_url'])) {
@@ -222,7 +236,6 @@ class Digitrust_CMP
 
 	    $this->setConfig(json_encode($config));
     }
-
 }
 
 new Digitrust_CMP();
