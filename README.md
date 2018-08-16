@@ -10,7 +10,7 @@ chmod +x /usr/local/bin/docker-compose
 
 Clone the git repository 
 ```
-git clone git@github.com:digi-trust/cmp-wp-plugin.git
+git clone https://github.com/digi-trust/cmp-wp-plugin.git
 ```
 Run docker
 ```

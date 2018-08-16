@@ -9,7 +9,6 @@ Text Domain: digitrust
 
 class Digitrust_CMP
 {
-
     const DEFAULT_CONFIG = '{
         "customPurposeListLocation": null,
         "globalVendorListLocation": "https://vendorlist.consensu.org/vendorlist.json",
@@ -46,12 +45,12 @@ class Digitrust_CMP
             "custom-font-url": null
         },
         "digitrust": {
-            "redirects": false
+            "redirects": true
         }
     }';
 
-
     protected $config = self::DEFAULT_CONFIG;
+    protected $errors = [];
 
     /**
      * Digitrust_CMP constructor.
@@ -59,7 +58,7 @@ class Digitrust_CMP
     public function __construct()
     {
         register_activation_hook(__FILE__, array($this, 'install'));
-        add_action('wp_enqueue_scripts',array($this, 'digitrust_init'));
+        add_action('wp_enqueue_scripts', array($this, 'digitrust_init'));
         add_action('admin_menu', array($this, 'digitrust_setting_page'));
         register_uninstall_hook(__FILE__, array('Digitrus_CMP', 'uninstall'));
         add_action('wp_loaded', array($this, 'update_config'));
@@ -68,10 +67,11 @@ class Digitrust_CMP
     /**
      * Init and Load CMP javascript
      */
-    function digitrust_init() {
-        wp_enqueue_script( 'cmp-config-js', plugins_url( '/js/cmp_config.js', __FILE__ ));
-        wp_localize_script( 'cmp-config-js', 'defaultConfig', json_decode($this->getConfig(), true));
-        wp_enqueue_script( 'cmp-js', plugins_url( '/js/cmp.js', __FILE__ ));
+    function digitrust_init()
+    {
+        wp_enqueue_script('cmp-config-js', plugins_url('/js/cmp_config.js', __FILE__));
+        wp_localize_script('cmp-config-js', 'defaultConfig', json_decode($this->getConfig(), true));
+        wp_enqueue_script('cmp-js', plugins_url('/js/cmp.js', __FILE__));
     }
 
     /**
@@ -84,7 +84,7 @@ class Digitrust_CMP
         $row = $wpdb->get_row("SELECT config FROM {$wpdb->prefix}digitrust_config WHERE id = 1");
         if (is_null($row)) {
             $wpdb->insert("{$wpdb->prefix}digitrust_config", array('config' => $this->config));
-        } elseif(!empty($row)) {
+        } elseif (!empty($row)) {
             $this->config = $row->config;
         }
     }
@@ -103,7 +103,10 @@ class Digitrust_CMP
      */
     function digitrust_setting_page()
     {
-        add_menu_page('DigiTrust config', 'DigiTrust', 'manage_options', 'digitrust', array($this, 'digitrust_setting_page_html'));
+        add_menu_page('DigiTrust CMP settings', 'DigiTrust', 'manage_options', 'digitrust', array(
+            $this,
+            'digitrust_setting_page_html'
+        ));
     }
 
     /**
@@ -114,9 +117,12 @@ class Digitrust_CMP
         if (!current_user_can('manage_options')) {
             return;
         }
-        $content = [];
-	    $content[] = '<script>var config_digitrust_cmp = ' . $this->getConfig() . '</script>';
-        $content[] = '<div class="wrap"><h1>'. esc_html(get_admin_page_title()).'</h1>';
+        $content   = [];
+        $content[] = '<script>var config_digitrust_cmp = ' . $this->getConfig() . '</script>';
+        $content[] = '<div class="wrap"><h1>' . esc_html(get_admin_page_title()) . '</h1>';
+        foreach ($this->errors as $error) {
+            $content[] = "<br/><div class='error'>$error</div>";
+        }
         echo join('', $content);
         require_once('digitrust_setting_page_html.html');
     }
@@ -127,9 +133,9 @@ class Digitrust_CMP
     public function update_config()
     {
         if (!empty($_POST['digitrust_cmp_reset'])) {
-        	$this->resetConfig();
+            $this->resetConfig();
         } elseif (!empty($_POST['digitrust_cmp_save'])) {
-	        $this->saveConfig();
+            $this->saveConfig();
         }
     }
 
@@ -141,88 +147,98 @@ class Digitrust_CMP
     {
         global $wpdb;
         $row = $wpdb->get_row("SELECT config FROM {$wpdb->prefix}digitrust_config WHERE id = 1");
+
         return ($row) ? $row->config : self::DEFAULT_CONFIG;
     }
 
     /**
      * Set $config
+     *
      * @param $config
      */
     public function setConfig($config)
     {
         global $wpdb;
-        $table = $wpdb->prefix.'digitrust_config';
+        $table = $wpdb->prefix . 'digitrust_config';
         $wpdb->update($table, array('config' => $config), array('id' => 1));
         $this->config = $config;
     }
 
     protected function resetConfig()
     {
-	    $this->setConfig(self::DEFAULT_CONFIG);
+        $this->setConfig(self::DEFAULT_CONFIG);
+    }
+
+    protected function validatePostData()
+    {
+        $expectedData = [
+            'digitrust_cmp_layout',
+            'digitrust_cmp_force_local',
+            'digitrust_cmp_ask_for_conset',
+            'digitrust_cmp_store_consent_globally',
+            'remove_logo'
+        ];
+
+        foreach ($expectedData as $key) {
+            if (!array_key_exists($key, $_POST)) {
+                $this->errors[] = $key . ' should be defined.';
+            }
+        }
     }
 
     protected function saveConfig()
     {
-	    $config = json_decode($this->getConfig(), true);
-	    if (!empty($_POST['digitrust_cmp_layout'])) {
-		    $config['layout'] = $_POST['digitrust_cmp_layout'];
-		    if ($config['layout'] == 'modal') {
-			    $config['blockBrowsing'] = true;
-		    }
-	    }
-	    if (isset($_POST['digitrust_cmp_block_browsing'])) {
-	    	if ($config['layout'] != 'modal') {
-			    $config['blockBrowsing'] = boolval($_POST['digitrust_cmp_block_browsing']);
-		    }
-	    }
+        $this->validatePostData();
+        if (!empty($this->errors)) {
+            return;
+        }
+        $config                  = json_decode($this->getConfig(), true);
+        $config['layout']        = $_POST['digitrust_cmp_layout'];
+        $config['blockBrowsing'] = boolval($_POST['digitrust_cmp_block_browsing']);
+        if ($config['layout'] === 'modal') {
+            $config['blockBrowsing'] = true;
+        }
 
-	    if (isset($_POST['digitrust_cmp_force_local'])) {
-	    	if ($_POST['digitrust_cmp_force_local'] == 'Autodetect') {
-			    $config['forceLocale'] = get_locale();
-		    } else {
-			    $config['forceLocale'] = $_POST['digitrust_cmp_force_local'];
-		    }
-	    }
+        if ($_POST['digitrust_cmp_force_local'] === 'Autodetect') {
+            $config['forceLocale'] = null;
+        } else {
+            $config['forceLocale'] = $_POST['digitrust_cmp_force_local'];
+        }
 
-	    if (isset($_POST['digitrust_cmp_ask_for_conset'])) {
-		    $config['askForConset'] = $_POST['digitrust_cmp_ask_for_conset'];
-		    if ($config['askForConset'] == 0) {
-			    $config['gdprAppliesGlobally'] = false;
-			    $config['testingMode'] = 'normal';
-		    } elseif ($config['askForConset'] == 1) {
-			    $config['gdprAppliesGlobally'] = true;
-			    $config['testingMode'] = 'normal';
-		    } else {
-			    $config['gdprAppliesGlobally'] = false;
-			    $config['testingMode'] = 'newer show';
-		    }
-	    }
+        $config['askForConset'] = (int)$_POST['digitrust_cmp_ask_for_conset'];
+        if ($config['askForConset'] === 0) {
+            $config['gdprAppliesGlobally'] = false;
+            $config['testingMode']         = 'normal';
+        } elseif ($config['askForConset'] === 1) {
+            $config['gdprAppliesGlobally'] = true;
+            $config['testingMode']         = 'normal';
+        } elseif ($config['askForConset'] === 2) {
+            $config['gdprAppliesGlobally'] = false;
+            $config['testingMode']         = 'never show';
+        }
 
-	    if (isset($_POST['digitrust_cmp_store_consent_globally'])) {
-		    $config['storeConsentGlobally'] = boolval($_POST['digitrust_cmp_store_consent_globally']);
-	    }
+        $config['storeConsentGlobally'] = boolval($_POST['digitrust_cmp_store_consent_globally']);
 
-	    if ($_POST['remove_logo'] == 1) {
-		    $config['logoUrl'] = null;
-	    } else {
-		    if (!empty($_FILES['digitrust_cmp_logo_url'])) {
-			    if ( ! function_exists( 'wp_handle_upload' ) ) {
-				    require_once( ABSPATH . 'wp-admin/includes/file.php' );
-			    }
-			    $moveFile = wp_handle_upload($_FILES['digitrust_cmp_logo_url'], ['test_form' => false]);
-		    }
+        if ((int)$_POST['remove_logo'] === 1) {
+            $config['logoUrl'] = null;
+        } else {
+            if (!empty($_FILES['digitrust_cmp_logo_url'])) {
+                if (!function_exists('wp_handle_upload')) {
+                    require_once(ABSPATH . 'wp-admin/includes/file.php');
+                }
+                $moveFile = wp_handle_upload($_FILES['digitrust_cmp_logo_url'], ['test_form' => false]);
+            }
 
-		    if (isset($moveFile['url'])) {
-			    $config['logoUrl'] = $moveFile['url'];
-			    if (empty($config['logoUrl'])) {
-				    $config['logoUrl'] = null;
-			    }
-		    }
-	    }
+            if (isset($moveFile['url'])) {
+                $config['logoUrl'] = $moveFile['url'];
+                if (empty($config['logoUrl'])) {
+                    $config['logoUrl'] = null;
+                }
+            }
+        }
 
-	    $this->setConfig(json_encode($config));
+        $this->setConfig(json_encode($config));
     }
-
 }
 
 new Digitrust_CMP();

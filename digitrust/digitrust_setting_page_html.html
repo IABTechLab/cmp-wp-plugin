@@ -1,205 +1,254 @@
 <form enctype="multipart/form-data" action="" method="post">
-    <div style="font-size: 14px; padding: 15px 0 5px 1px">Consent Management UI layout</div>
-    <div>
-        <div style="background-color: #6f6f6f;width: 100px;height: 100px;">
-            <input type="radio" style="width: 16px;height: 16px;position:  absolute;margin: 0px 0 0 42px;"
-                   name="digitrust_cmp_layout" value="modal" id="digitrust_cmp_layout_modal"
-                   onchange="var elem = document.getElementById('digitrust_cmp_block_browsing');
-				                         elem.value = 1;
-										 elem.disabled = true;">
-            <div style="background-color: #c5c5c5;width: 45px;height: 45px;margin: 29px 0px 0px 28px;
+    <table>
+        <tr>
+            <td style="border: 1px solid #d6d6d6;padding: 10px;">
+                <div style="font-weight: bold; font-size: 15px">Customise your Consent User
+                    Interface
+                </div>
+                <div style="font-size: 14px; padding: 15px 0 5px 1px">Consent Management UI layout</div>
+                <div>
+                    <div style="background-color: #6f6f6f;width: 100px;height: 100px;">
+                        <input type="radio" style="width: 16px;height: 16px;position:  absolute;margin: 0px 0 0 42px;"
+                               name="digitrust_cmp_layout" value="modal" id="digitrust_cmp_layout_modal"
+                               onchange="changeLayout()">
+                        <div style="background-color: #c5c5c5;width: 45px;height: 45px;margin: 29px 0px 0px 28px;
 				                    position:  absolute;border:  1px solid;">
-                <div style="background-color: #000000;width: 100%;height: 1px;position:  absolute;
+                            <div style="background-color: #000000;width: 100%;height: 1px;position:  absolute;
 				            	        margin: 12px 0 0 0;"></div>
-                <div style="background-color: #000000;width: 100%;height: 1px;position:  absolute;
+                            <div style="background-color: #000000;width: 100%;height: 1px;position:  absolute;
 				                        margin: 28px 0 0 0;"></div>
-            </div>
-        </div>
-        <div style="background-color: #6f6f6f;width: 100px;height: 100px;position:  absolute;
+                        </div>
+                    </div>
+                    <div style="background-color: #6f6f6f;width: 100px;height: 100px;position:  absolute;
 								  margin: -100px 0 0 107px;">
-            <input type="radio" style="width: 16px;height: 16px;position:  absolute;margin: 0 0 0 38px;" value="footer"
-                   name="digitrust_cmp_layout" id="digitrust_cmp_layout_footer"
-                   onchange="var elem = document.getElementById('digitrust_cmp_block_browsing');
-										 elem.disabled = false;">
-            <div style="background-color: #c5c5c5;width: 98px;height: 20px;margin: 78px 0px 0px 0px;
+                        <input type="radio" style="width: 16px;height: 16px;position:  absolute;margin: 0 0 0 38px;"
+                               value="footer"
+                               name="digitrust_cmp_layout" id="digitrust_cmp_layout_footer"
+                               onchange="changeLayout()">
+                        <div style="background-color: #c5c5c5;width: 98px;height: 20px;margin: 78px 0px 0px 0px;
 				             position:  absolute;border:  1px solid;">
-                <div style="background-color: #000000;width: 100%;height: 1px;position:  absolute;
+                            <div style="background-color: #000000;width: 100%;height: 1px;position:  absolute;
 				                        margin: 10px 0 0 0;"></div>
-            </div>
-        </div>
-        <div style="background-color: #6f6f6f;width: 100px;height: 100px;position:  absolute;
+                        </div>
+                    </div>
+                    <div style="background-color: #6f6f6f;width: 100px;height: 100px;position:  absolute;
                                   margin: -100px 0 0 215px;">
-            <input type="radio" checked="checked"
-                   style="width: 16px;height: 16px;position:  absolute;margin: 0 0 0 38px;" value="thin"
-                   name="digitrust_cmp_layout" id="digitrust_cmp_layout_thin"
-                   onchange="var elem = document.getElementById('digitrust_cmp_block_browsing');
-										 elem.disabled = false;">
-            <div style="background-color: #c5c5c5; width: 98px; height: 10px; margin: 88px 0px 0px 0px;
+                        <input type="radio" checked="checked"
+                               style="width: 16px;height: 16px;position:  absolute;margin: 0 0 0 38px;" value="thin"
+                               name="digitrust_cmp_layout" id="digitrust_cmp_layout_thin"
+                               onchange="changeLayout()">
+                        <div style="background-color: #c5c5c5; width: 98px; height: 10px; margin: 88px 0px 0px 0px;
                         position:  absolute; border:  1px solid;">
-            </div>
-        </div>
-    </div>
-    <div style="font-size: 14px; padding: 15px 0 5px 1px">
-        Block browsing before a consent decision has been made
-    </div>
-    <div><select name="digitrust_cmp_block_browsing" id="digitrust_cmp_block_browsing" style="width: 242px">
-        <option value="0">No</option>
-        <option value="1">Yes</option>
-    </select>
-        <div style="font-size: 14px; padding: 15px 0 5px 1px">Consent UI language</div>
-        <div><select name="digitrust_cmp_force_local" id="digitrust_cmp_force_local" style="width: 242px">
-            <option value="Autodetect">Autodetect</option>
-            <option value="ar">Aragonese</option>
-            <option value="ast">Asturian</option>
-            <option value="eu">Basque</option>
-            <option value="br">Breton</option>
-            <option value="bg">Bulgarian</option>
-            <option value="ca">Catalan</option>
-            <option value="co">Corsican</option>
-            <option value="hr">Croatian</option>
-            <option value="cs">Czech</option>
-            <option value="da">Danish</option>
-            <option value="nl">Dutch</option>
-            <option value="nl-be">Dutch (Belgium)</option>
-            <option value="en-ie">English (Ireland)</option>
-            <option value="en-gb">English (United Kingdom)</option>
-            <option value="eo">Esperanto</option>
-            <option value="et">Estonian</option>
-            <option value="fo">Faeroese</option>
-            <option value="fi">Finnish</option>
-            <option value="fr">French</option>
-            <option value="fr-be">French (Belgium)</option>
-            <option value="fr-fr">French (France)</option>
-            <option value="fr-mc">French (Principality of Monaco)</option>
-            <option value="fr-lu">French (Luxembourg)</option>
-            <option value="fr-ch">French (Switzerland)</option>
-            <option value="fy">Frisian</option>
-            <option value="fur">Friulian</option>
-            <option value="gd-ie">Gaelic (Irish)</option>
-            <option value="gd">Gaelic (Scots)</option>
-            <option value="gl">Galacian</option>
-            <option value="de">German</option>
-            <option value="de-at">German (Austria)</option>
-            <option value="de-de">German (Germany)</option>
-            <option value="de-li">German (Liechtenstein)</option>
-            <option value="de-lu">German (Luxembourg)</option>
-            <option value="de-ch">German (Switzerland)</option>
-            <option value="el">Greek</option>
-            <option value="hu">Hungarian</option>
-            <option value="is">Icelandic</option>
-            <option value="ga">Irish</option>
-            <option value="it">Italian</option>
-            <option value="it-ch">Italian (Switzerland)</option>
-            <option value="la">Latin</option>
-            <option value="lv">Latvian</option>
-            <option value="lt">Lithuanian</option>
-            <option value="lb">Luxembourgish</option>
-            <option value="mt">Maltese</option>
-            <option value="mo">Moldavian</option>
-            <option value="no">Norwegian</option>
-            <option value="nb">Norwegian (Bokmal)</option>
-            <option value="nn">Norwegian (Nynorsk)</option>
-            <option value="oc">Occitan</option>
-            <option value="pl">Polish</option>
-            <option value="pt">Portuguese</option>
-            <option value="rm">Rhaeto-Romanic</option>
-            <option value="ro">Romanian</option>
-            <option value="ro-mo">Romanian (Moldavia)</option>
-            <option value="ru-mo">Russian (Moldavia)</option>
-            <option value="sc">Sardinian</option>
-            <option value="sk">Slovak</option>
-            <option value="sl">Slovenian</option>
-            <option value="sb">Sorbian</option>
-            <option value="es">Spanish</option>
-            <option value="es-es">Spanish (Spain)</option>
-            <option value="sv">Swedish</option>
-            <option value="sv-fi">Swedish (Finland)</option>
-            <option value="sv-sv">Swedish (Sweden)</option>
-            <option value="hsb">Upper Sorbian</option>
-            <option value="vo">Volapuk</option>
-            <option value="wa">Walloon</option>
-            <option value="cy">Welsh</option>
-        </select>
-            <div style="font-size: 14px; padding: 15px 0 5px 1px">Ask for conset</div>
-            <div><select name="digitrust_cmp_ask_for_conset" id="digitrust_cmp_ask_for_conset" style="width: 242px">
-                <option selected="selected" value="0">In EU only</option>
-                <option value="1">Everywhere</option>
-                <option value="2">Nowhere</option>
-            </select>
-                <div style="font-size: 14px; padding: 15px 0 5px 1px">User consent settings should apply to</div>
-                <div><select name="digitrust_cmp_store_consent_globally" id="digitrust_cmp_store_consent_globally"
-                             style="width: 242px">
-                    <option selected="selected" value="1">Your site and other sites user visits</option>
-                    <option value="0">Your site only</option>
-                </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="font-size: 14px; padding: 15px 0 5px 1px">
+                    Block browsing before a consent decision has been made
+                </div>
+                <div>
+                    <select name="digitrust_cmp_block_browsing" id="digitrust_cmp_block_browsing" style="width: 255px">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div style="font-size: 14px; padding: 15px 0 5px 1px">Select your UI language</div>
+                <div>
+                    <select name="digitrust_cmp_force_local" id="digitrust_cmp_force_local" style="width: 255px">
+                        <option value="Autodetect">Autodetect</option>
+                        <option value="ar">Aragonese</option>
+                        <option value="ast">Asturian</option>
+                        <option value="eu">Basque</option>
+                        <option value="br">Breton</option>
+                        <option value="bg">Bulgarian</option>
+                        <option value="ca">Catalan</option>
+                        <option value="co">Corsican</option>
+                        <option value="hr">Croatian</option>
+                        <option value="cs">Czech</option>
+                        <option value="da">Danish</option>
+                        <option value="nl">Dutch</option>
+                        <option value="nl-be">Dutch (Belgium)</option>
+                        <option value="en-ie">English (Ireland)</option>
+                        <option value="en-gb">English (United Kingdom)</option>
+                        <option value="eo">Esperanto</option>
+                        <option value="et">Estonian</option>
+                        <option value="fo">Faeroese</option>
+                        <option value="fi">Finnish</option>
+                        <option value="fr">French</option>
+                        <option value="fr-be">French (Belgium)</option>
+                        <option value="fr-fr">French (France)</option>
+                        <option value="fr-mc">French (Principality of Monaco)</option>
+                        <option value="fr-lu">French (Luxembourg)</option>
+                        <option value="fr-ch">French (Switzerland)</option>
+                        <option value="fy">Frisian</option>
+                        <option value="fur">Friulian</option>
+                        <option value="gd-ie">Gaelic (Irish)</option>
+                        <option value="gd">Gaelic (Scots)</option>
+                        <option value="gl">Galacian</option>
+                        <option value="de">German</option>
+                        <option value="de-at">German (Austria)</option>
+                        <option value="de-de">German (Germany)</option>
+                        <option value="de-li">German (Liechtenstein)</option>
+                        <option value="de-lu">German (Luxembourg)</option>
+                        <option value="de-ch">German (Switzerland)</option>
+                        <option value="el">Greek</option>
+                        <option value="hu">Hungarian</option>
+                        <option value="is">Icelandic</option>
+                        <option value="ga">Irish</option>
+                        <option value="it">Italian</option>
+                        <option value="it-ch">Italian (Switzerland)</option>
+                        <option value="la">Latin</option>
+                        <option value="lv">Latvian</option>
+                        <option value="lt">Lithuanian</option>
+                        <option value="lb">Luxembourgish</option>
+                        <option value="mt">Maltese</option>
+                        <option value="mo">Moldavian</option>
+                        <option value="no">Norwegian</option>
+                        <option value="nb">Norwegian (Bokmal)</option>
+                        <option value="nn">Norwegian (Nynorsk)</option>
+                        <option value="oc">Occitan</option>
+                        <option value="pl">Polish</option>
+                        <option value="pt">Portuguese</option>
+                        <option value="rm">Rhaeto-Romanic</option>
+                        <option value="ro">Romanian</option>
+                        <option value="ro-mo">Romanian (Moldavia)</option>
+                        <option value="ru-mo">Russian (Moldavia)</option>
+                        <option value="sc">Sardinian</option>
+                        <option value="sk">Slovak</option>
+                        <option value="sl">Slovenian</option>
+                        <option value="sb">Sorbian</option>
+                        <option value="es">Spanish</option>
+                        <option value="es-es">Spanish (Spain)</option>
+                        <option value="sv">Swedish</option>
+                        <option value="sv-fi">Swedish (Finland)</option>
+                        <option value="sv-sv">Swedish (Sweden)</option>
+                        <option value="hsb">Upper Sorbian</option>
+                        <option value="vo">Volapuk</option>
+                        <option value="wa">Walloon</option>
+                        <option value="cy">Welsh</option>
+                    </select>
+                </div>
+
+                <div id="site_logo">
                     <div style="font-size: 14px; padding: 15px 0 5px 1px">Site logo</div>
                     <div>
                         <input name="digitrust_cmp_logo_url" id="digitrust_cmp_logo_url" type="file"
-                                accept="image/*" onchange="previewLogo(event)" />
-                        <input name="remove_logo_button" id="remove_logo_button" type="button" value="remove logo"
+                               accept="image/*" onchange="previewLogo(event)"/>
+                        <input name="remove_logo_button" id="remove_logo_button" type="button" value="Remove logo"
+                               class="button button-primary"
                                onclick="removeLogo(event)" style="margin: 0px 0px 8px 0;">
                     </div>
                     <div>
                         <img id="preview_logo" style="max-width: 75%; max-height: 100px;">
                         <input type="hidden" name="remove_logo" id="remove_logo" value="0">
                     </div>
-                    <p class="submit">
-                        <input type="submit" name="digitrust_cmp_reset" class="button button-primary"
-                               style="width: 130px" value="Reset to Defaults">
-                        <input type="submit" name="digitrust_cmp_save" class="button button-primary"
-                               style="width: 110px" value="Save Changes">
-                    </p></div>
-                <div class="clear"></div>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div class="clear"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #d6d6d6;padding: 10px;">
+                <div style="font-weight: bold; font-size: 15px">Customise your Consent Solution
+                </div>
+                <div style="font-size: 14px; padding: 15px 0 5px 1px">Which users would you like to ask for consent?
+                </div>
+                <div>
+                    <select name="digitrust_cmp_ask_for_conset" id="digitrust_cmp_ask_for_conset" style="width: 255px">
+                        <option selected="selected" value="0">EU users only</option>
+                        <option value="1">Everyone</option>
+                        <option value="2">No-one</option>
+                    </select>
+                </div>
+                <div style="font-size: 14px; padding: 15px 0 5px 1px">When users set their consent preferences, where
+                    should those settings apply?
+                </div>
+                <div>
+                    <select name="digitrust_cmp_store_consent_globally" id="digitrust_cmp_store_consent_globally"
+                            style="width: 255px">
+                        <option selected="selected" value="1">On your site and across the internet</option>
+                        <option value="0">On your site only</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <p class="submit">
+        <input type="submit" name="digitrust_cmp_reset" class="button button-primary"
+               style="width: 130px" value="Reset to Defaults">
+        <input type="submit" name="digitrust_cmp_save" class="button button-primary"
+               style="width: 110px" value="Save Changes">
+    </p>
+    <div>
+        <p style="line-height: 1em; color: #8a8a8a; font-size: 9px;">Please use links below to know more about GDPR,
+            Transparency & Consent Framework and DigiTrust CMP</p>
+        <p style="line-height: 1em; font-size: 9px;"><a style="color: #8a8a8a;"
+                                                        href="https://www.iabeurope.eu/category/policy/gdpr-implementation/"
+                                                        target="_blank">https://www.iabeurope.eu/category/policy/gdpr-implementation/</a>
+        </p>
+        <p style="line-height: 1em; font-size: 9px;"><a style="color: #8a8a8a;" href="http://advertisingconsent.eu/"
+                                                        target="_blank">http://advertisingconsent.eu/</a></p>
+        <p style="line-height: 1em; font-size: 9px;"><a style="color: #8a8a8a;" href="https://github.com/digi-trust/cmp"
+                                                        target="_blank">https://github.com/digi-trust/cmp</a></p>
     </div>
 </form>
 <script>
-    if (config_digitrust_cmp) {
-      document.getElementById('digitrust_cmp_layout_' + config_digitrust_cmp['layout']).checked = true;
-      document.getElementById('digitrust_cmp_block_browsing').value = config_digitrust_cmp['blockBrowsing'] ? 1 : 0;
-      if (config_digitrust_cmp['layout'] === 'modal') {
-        document.getElementById('digitrust_cmp_block_browsing').disabled = true;
-      }
-
-      var digitrust_cmp_force_local = document.getElementById('digitrust_cmp_force_local');
-      digitrust_cmp_force_local.value = config_digitrust_cmp['forceLocale'];
-      if (digitrust_cmp_force_local.value === '') {
-        digitrust_cmp_force_local.value = 'Autodetect';
-      }
-
-      document.getElementById('digitrust_cmp_ask_for_conset').value = !config_digitrust_cmp['askForConset'] ?
-        0: config_digitrust_cmp['askForConset'];
-
-      document.getElementById('digitrust_cmp_store_consent_globally').value =
-        config_digitrust_cmp['storeConsentGlobally'] ? 1 : 0;
-
-      document.getElementById('preview_logo').src = config_digitrust_cmp['logoUrl'];
-      if (!config_digitrust_cmp['logoUrl']) {
-        document.getElementById('preview_logo').hidden = true;
-        document.getElementById('remove_logo_button').hidden = true;
-      } else {
-        document.getElementById('digitrust_cmp_logo_url').hidden = true;
-      }
+  if (config_digitrust_cmp) {
+    document.getElementById('digitrust_cmp_layout_' + config_digitrust_cmp['layout']).checked = true;
+    document.getElementById('digitrust_cmp_block_browsing').value = config_digitrust_cmp['blockBrowsing'] ? 1 : 0;
+    if (config_digitrust_cmp['layout'] === 'modal') {
+      document.getElementById('digitrust_cmp_block_browsing').disabled = true;
     }
 
-    var previewLogo = function(event) {
-      var output = document.getElementById('preview_logo');
-      output.src = URL.createObjectURL(event.target.files[0]);
-      document.getElementById('preview_logo').hidden = false;
-      document.getElementById('remove_logo_button').hidden = false;
-      document.getElementById('remove_logo').value = 0;
-      document.getElementById('digitrust_cmp_logo_url').hidden = true;
-    };
+    var digitrust_cmp_force_local = document.getElementById('digitrust_cmp_force_local');
+    digitrust_cmp_force_local.value = config_digitrust_cmp['forceLocale'];
+    if (digitrust_cmp_force_local.value === '') {
+      digitrust_cmp_force_local.value = 'Autodetect';
+    }
 
-    var removeLogo = function (event) {
-        document.getElementById('remove_logo').value = 1;
-        document.getElementById('preview_logo').hidden = true;
-        document.getElementById('remove_logo_button').hidden = true;
-        document.getElementById('digitrust_cmp_logo_url').value = null;
-        document.getElementById('digitrust_cmp_logo_url').hidden = false;
-    };
+    document.getElementById('digitrust_cmp_ask_for_conset').value = !config_digitrust_cmp['askForConset'] ?
+      0 : config_digitrust_cmp['askForConset'];
+
+    document.getElementById('digitrust_cmp_store_consent_globally').value =
+      config_digitrust_cmp['storeConsentGlobally'] ? 1 : 0;
+
+    document.getElementById('preview_logo').src = config_digitrust_cmp['logoUrl'];
+    if (!config_digitrust_cmp['logoUrl']) {
+      document.getElementById('preview_logo').hidden = true;
+      document.getElementById('remove_logo_button').style.display = 'none';
+    } else {
+      document.getElementById('digitrust_cmp_logo_url').hidden = true;
+    }
+
+    document.getElementById('site_logo').hidden = !!document.getElementById('digitrust_cmp_layout_thin').checked;
+  }
+
+  var previewLogo = function (event) {
+    var output = document.getElementById('preview_logo');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    document.getElementById('preview_logo').hidden = false;
+    document.getElementById('remove_logo_button').style.display = 'inline';
+    document.getElementById('remove_logo').value = 0;
+    document.getElementById('digitrust_cmp_logo_url').hidden = true;
+  };
+
+  var removeLogo = function (event) {
+    document.getElementById('remove_logo').value = 1;
+    document.getElementById('preview_logo').hidden = true;
+    document.getElementById('remove_logo_button').style.display = 'none';
+    document.getElementById('digitrust_cmp_logo_url').value = null;
+    document.getElementById('digitrust_cmp_logo_url').hidden = false;
+  };
+
+  var changeLayout = function () {
+    document.getElementById('site_logo').hidden = !!document.getElementById('digitrust_cmp_layout_thin').checked;
+
+    var elem = document.getElementById('digitrust_cmp_block_browsing');
+    if (document.getElementById('digitrust_cmp_layout_modal').checked) {
+      elem.value = 1;
+      elem.disabled = true;
+    } else {
+      elem.disabled = false;
+    }
+  }
 
 </script>
