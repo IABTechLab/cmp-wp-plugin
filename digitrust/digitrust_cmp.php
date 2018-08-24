@@ -14,6 +14,7 @@ class Digitrust_CMP
         "globalVendorListLocation": "https://vendorlist.consensu.org/vendorlist.json",
         "globalConsentLocation": "https://cdn.digitrust.mgr.consensu.org/1/portal.html",
         "storeConsentGlobally": true,
+        "companyName": null,
         "storePublisherData": true,
         "logging": false,
         "localization": {},
@@ -193,6 +194,7 @@ class Digitrust_CMP
             return;
         }
         $config                  = json_decode($this->getConfig(), true);
+        $config['companyName']   = get_bloginfo();
         $config['layout']        = $_POST['digitrust_cmp_layout'];
         $config['blockBrowsing'] = boolval($_POST['digitrust_cmp_block_browsing']);
         if ($config['layout'] === 'modal') {
